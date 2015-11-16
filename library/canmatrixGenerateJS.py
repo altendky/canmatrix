@@ -117,7 +117,7 @@ def generateSignalMacros_js(botschaft, generatorConfig):
 					macros += '\n'
 
 		else: # Motorola 
-#TODO flasche Bits bei nicht-vollst‰ndigen Bytes...
+#TODO flasche Bits bei nicht-vollst√§ndigen Bytes...
 			startbyte = (signal._startbit / 8)
 			startbit = 7 - ( signal._startbit % 8)			
 
