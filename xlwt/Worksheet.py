@@ -52,7 +52,7 @@ class Worksheet(object):
     """
     # a safe default value, 3 is always valid!
     active_pane = 3
-    
+
     #################################################################
     ## Constructor
     #################################################################
@@ -127,7 +127,7 @@ class Worksheet(object):
         #     xlwt_worksheet.split_position_units_are_twips = True
         # because that's what's actually in the file.
 
-		# There are 20 twips to a point. There are 72 points to an inch.
+                # There are 20 twips to a point. There are 72 points to an inch.
 
         self.__row_gut_width = 0
         self.__col_gut_height = 0
@@ -1410,5 +1410,3 @@ class Worksheet(object):
             self.__flushed_rows[rowx] = 1
         self.__update_row_visible_levels()
         self.__rows = {}
-
-

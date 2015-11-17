@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#Copyright (c) 2013, Eduard Broecker 
+#Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
 #
 #Redistribution and use in source and binary forms, with or without modification, are permitted provided that
@@ -37,10 +37,10 @@ parser = OptionParser(usage=usage)
 #parser.add_option("-d", "--debug",
 #                  dest="debug", default=False,
 #                  help="print debug messages to stdout")
-parser.add_option("", "--dbcCharset", 
+parser.add_option("", "--dbcCharset",
                   dest="dbcCharset", default="iso-8859-1",
                   help="Charset of Comments in dbc, maybe utf-8")
-parser.add_option("", "--dbcCommentCharset", 
+parser.add_option("", "--dbcCommentCharset",
                   dest="dbcCommentCharset", default="iso-8859-1",
                   help="Charset of Comments in dbc")
 (cmdlineOptions, args) = parser.parse_args()
@@ -56,19 +56,19 @@ outfileName = args[1]
 
 print "Importing " + infile + " ... "
 if infile[-3:] == 'dbc':
-	dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
+    dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 elif infile[-3:] == 'dbf':
-	dbs[""] = im.importDbf(infile)
+    dbs[""] = im.importDbf(infile)
 elif infile[-3:] == 'kcd':
-	dbs[""] = im.importKcd(infile)
+    dbs[""] = im.importKcd(infile)
 elif infile[-3:] == 'xls':
-	dbs[""] = im.importXls(infile)
+    dbs[""] = im.importXls(infile)
 elif infile[-4:] == 'xlsx' :
-	dbs[""] = im.importXlsx(infile)
+    dbs[""] = im.importXlsx(infile)
 elif infile[-5:] == 'arxml':
-	dbs = im.importArxml(infile)
+    dbs = im.importArxml(infile)
 elif infile[-4:] == 'yaml':
-	dbs[""] = im.importYaml(infile)
+    dbs[""] = im.importYaml(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
 print "done\n"
@@ -77,30 +77,30 @@ print "done\n"
 print "Exporting " + outfileName + " ... "
 
 for name in dbs:
-	db = dbs[name]
-	print name
-	print "%d Frames found" % (db._fl._list.__len__())
-	
-	if len(name) > 0:
-		outfile = name + "_" + outfileName
-	else:
-		outfile = outfileName
-	if outfile[-3:] == 'dbc':
-		ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
-	elif outfile[-3:] == 'dbf':
-		ex.exportDbf(db, outfile)
-	elif outfile[-3:] == 'kcd':
-		ex.exportKcd(db, outfile)
-	elif outfile[-4:] == 'xlsx':
-		ex.exportXlsx(db, outfile)
-	elif outfile[-3:] == 'xls':
-		ex.exportXls(db, outfile)
-	elif outfile[-4:] == 'json':
-		ex.exportJson(db, outfile)
-	elif outfile[-5:] == 'arxml':
-		ex.exportArxml(db, outfile)
-	elif outfile[-4:] == 'yaml':
-		ex.exportYaml(db, outfile)
-	else:
-	    sys.stderr.write('File not recognized: ' + infile + "\n")
+    db = dbs[name]
+    print name
+    print "%d Frames found" % (db._fl._list.__len__())
+
+    if len(name) > 0:
+        outfile = name + "_" + outfileName
+    else:
+        outfile = outfileName
+    if outfile[-3:] == 'dbc':
+        ex.exportDbc(db, outfile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
+    elif outfile[-3:] == 'dbf':
+        ex.exportDbf(db, outfile)
+    elif outfile[-3:] == 'kcd':
+        ex.exportKcd(db, outfile)
+    elif outfile[-4:] == 'xlsx':
+        ex.exportXlsx(db, outfile)
+    elif outfile[-3:] == 'xls':
+        ex.exportXls(db, outfile)
+    elif outfile[-4:] == 'json':
+        ex.exportJson(db, outfile)
+    elif outfile[-5:] == 'arxml':
+        ex.exportArxml(db, outfile)
+    elif outfile[-4:] == 'yaml':
+        ex.exportYaml(db, outfile)
+    else:
+        sys.stderr.write('File not recognized: ' + infile + "\n")
 print "done"

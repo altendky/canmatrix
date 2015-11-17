@@ -28,8 +28,8 @@ _cellty_from_fmtty = {
     FGE: XL_CELL_NUMBER,
     FDT: XL_CELL_DATE,
     FTX: XL_CELL_NUMBER, # Yes, a number can be formatted as text.
-    }    
-    
+    }
+
 excel_default_palette_b5 = (
     (  0,   0,   0), (255, 255, 255), (255,   0,   0), (  0, 255,   0),
     (  0,   0, 255), (255, 255,   0), (255,   0, 255), (  0, 255, 255),
@@ -456,7 +456,7 @@ def is_date_format_string(book, fmt):
     # TODO: u'[h]\\ \\h\\o\\u\\r\\s' ([h] means don't care about hours > 23)
     state = 0
     s = ''
-    
+
     for c in fmt:
         if state == 0:
             if c == UNICODE_LITERAL('"'):
@@ -1009,7 +1009,7 @@ def xf_epilogue(self):
                 elif not self.xf_list[xf.parent_style_index].is_style:
                     fprintf(self.logfile,
                         "NOTE !!! XF[%d]: parent_style_index is %d; style flag not set\n",
-                        xf.xf_index, xf.parent_style_index)                
+                        xf.xf_index, xf.parent_style_index)
             if blah1 and xf.parent_style_index > xf.xf_index:
                 fprintf(self.logfile,
                     "NOTE !!! XF[%d]: parent_style_index is %d; out of order?\n",

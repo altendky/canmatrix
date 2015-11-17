@@ -87,7 +87,7 @@ except NameError:
                         or not name or name[0].isdigit()
                         or name.startswith('_')
                         or name in seen):
-                        names[i] = '_%d' % i
+                    names[i] = '_%d' % i
 
                 seen.add(name)
             field_names = tuple(names)
