@@ -1,3 +1,4 @@
+from builtins import str
 ###############################################################################
 #
 # Chartsheet - A class for writing the Excel XLSX Worksheet file.

@@ -11,6 +11,10 @@
 # No part of the content of this file was derived from the works of David Giffin.
 
 from __future__ import print_function
+from builtins import zip
+from builtins import str
+from builtins import range
+from builtins import object
 
 DEBUG = 0
 import re
@@ -110,12 +114,12 @@ def initialise_colour_map(book):
     if not book.formatting_info:
         return
     # Add the 8 invariant colours
-    for i in xrange(8):
+    for i in range(8):
         book.colour_map[i] = excel_default_palette_b8[i]
     # Add the default palette depending on the version
     dpal = default_palette[book.biff_version]
     ndpal = len(dpal)
-    for i in xrange(ndpal):
+    for i in range(ndpal):
         book.colour_map[i+8] = dpal[i]
     # Add the specials -- None means the RGB value is not known
     # System window text colour for border lines
@@ -135,7 +139,7 @@ def nearest_colour_index(colour_map, rgb, debug=0):
     # Doesn't have to be fancy.
     best_metric = 3 * 256 * 256
     best_colourx = 0
-    for colourx, cand_rgb in colour_map.items():
+    for colourx, cand_rgb in list(colour_map.items()):
         if cand_rgb is None:
             continue
         metric = 0
@@ -408,7 +412,7 @@ fmt_code_ranges = [ # both-inclusive ranges of "standard" format codes
 
 std_format_code_types = {}
 for lo, hi, ty in fmt_code_ranges:
-    for x in xrange(lo, hi+1):
+    for x in range(lo, hi+1):
         std_format_code_types[x] = ty
 del lo, hi, ty, x
 
@@ -583,7 +587,7 @@ def handle_palette(book, data):
     assert book.palette_record == [] # There should be only 1 PALETTE record
     # a colour will be 0xbbggrr
     # IOW, red is at the little end
-    for i in xrange(n_colours):
+    for i in range(n_colours):
         c = colours[i]
         red   =  c        & 0xff
         green = (c >>  8) & 0xff
@@ -674,7 +678,7 @@ def check_colour_indexes_in_obj(book, obj, orig_index):
                 % (orig_index, oname, attr, nobj), file=book.logfile)
 
 def fill_in_standard_formats(book):
-    for x in std_format_code_types.keys():
+    for x in list(std_format_code_types.keys()):
         if x not in book.format_map:
             ty = std_format_code_types[x]
             # Note: many standard format codes (mostly CJK date formats) have
@@ -977,7 +981,7 @@ def xf_epilogue(self):
                 "NOTE !!! XF[%d] parent[%d] %s different\n",
                 xf_arg.xf_index, parent_arg.xf_index, attr)
 
-    for xfx in xrange(num_xfs):
+    for xfx in range(num_xfs):
         xf = self.xf_list[xfx]
         if xf.format_key not in self.format_map:
             msg = "ERROR *** XF[%d] unknown format key (%d, 0x%04x)\n"

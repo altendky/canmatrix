@@ -1,3 +1,4 @@
+from builtins import str
 ###############################################################################
 #
 # Vml - A class for writing the Excel XLSX Vml file.

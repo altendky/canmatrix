@@ -1,3 +1,7 @@
+from builtins import str
+from builtins import map
+from builtins import range
+from builtins import object
 # -*- coding: windows-1252 -*-
 #             BOF
 #             UNCALCED
@@ -37,7 +41,7 @@ from . import Bitmap
 from . import Style
 from .Row import Row
 from .Column import Column
-from .compat import unicode, itervalues
+from .compat import str, itervalues
 import tempfile
 
 class Worksheet(object):
@@ -725,7 +729,7 @@ class Worksheet(object):
 
     def set_header_str(self, value):
         if isinstance(value, str):
-            value = unicode(value, self.__parent.encoding)
+            value = str(value, self.__parent.encoding)
         self.__header_str = value
 
     def get_header_str(self):
@@ -737,7 +741,7 @@ class Worksheet(object):
 
     def set_footer_str(self, value):
         if isinstance(value, str):
-            value = unicode(value, self.__parent.encoding)
+            value = str(value, self.__parent.encoding)
         self.__footer_str = value
 
     def get_footer_str(self):
@@ -1289,13 +1293,13 @@ class Worksheet(object):
             # when split, the active pain can be set as required:
             active_pane = self.active_pane
 
-        result = BIFFRecords.PanesRecord(*map(int, (
+        result = BIFFRecords.PanesRecord(*list(map(int, (
             self.__vert_split_pos,
             self.__horz_split_pos,
             self.__horz_split_first_visible,
             self.__vert_split_first_visible,
             active_pane
-            ))).get()
+            )))).get()
 
         return result
 

@@ -1,3 +1,8 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from builtins import object
+from past.utils import old_div
 ###############################################################################
 #
 # Workbook - A class for writing the Excel XLSX Workbook file.
@@ -1217,8 +1222,8 @@ class Workbook(xmlwriter.XMLwriter):
                                                    comment_id)
 
                 # Each VML should start with a shape id incremented by 1024.
-                vml_data_id += 1 * int((1024 + count) / 1024)
-                vml_shape_id += 1024 * int((1024 + count) / 1024)
+                vml_data_id += 1 * int(old_div((1024 + count), 1024))
+                vml_shape_id += 1024 * int(old_div((1024 + count), 1024))
 
             if sheet.has_header_vml:
                 vml_header_id += 1
@@ -1280,7 +1285,7 @@ class Workbook(xmlwriter.XMLwriter):
 
         for chart in charts:
 
-            for c_range in chart.formula_ids.keys():
+            for c_range in list(chart.formula_ids.keys()):
                 r_id = chart.formula_ids[c_range]
 
                 # Skip if the series has user defined data.

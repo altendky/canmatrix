@@ -4,6 +4,9 @@
 ##
 
 from __future__ import print_function, unicode_literals
+from builtins import chr
+from builtins import range
+from builtins import object
 
 DEBUG = 0
 
@@ -52,7 +55,7 @@ def ensure_elementtree_imported(verbosity, logfile):
     if verbosity:
         etree_version = repr([
             (item, getattr(ET, item))
-            for item in ET.__dict__.keys()
+            for item in list(ET.__dict__.keys())
             if item.lower().replace('_', '') == 'version'
             ])
         print(ET.__file__, ET.__name__, etree_version, ET_has_iterparse, file=logfile)
@@ -69,7 +72,7 @@ def augment_keys(adict, uri):
         adict[uri + x] = adict[x]
 
 _UPPERCASE_1_REL_INDEX = {} # Used in fast conversion of column names (e.g. "XFD") to indices (16383)
-for _x in xrange(26):
+for _x in range(26):
     _UPPERCASE_1_REL_INDEX["ABCDEFGHIJKLMNOPQRSTUVWXYZ"[_x]] = _x + 1
 for _x in "123456789":
     _UPPERCASE_1_REL_INDEX[_x] = 0
@@ -96,7 +99,7 @@ def cell_name_to_rowx_colx(cell_name, letter_value=_UPPERCASE_1_REL_INDEX):
     return rowx, colx
 
 error_code_from_text = {}
-for _code, _text in error_text_from_code.items():
+for _code, _text in list(error_text_from_code.items()):
     error_code_from_text[_text] = _code
 
 # === X12 === Excel 2007 .xlsx ===============================================
@@ -117,7 +120,7 @@ IS_TAG = U_SSML12 + 'is' # cell child: inline string
 
 def unescape(s,
     subber=re.compile(r'_x[0-9A-Fa-f]{4,4}_', re.UNICODE).sub,
-    repl=lambda mobj: unichr(int(mobj.group(0)[2:6], 16)),
+    repl=lambda mobj: chr(int(mobj.group(0)[2:6], 16)),
     ):
     if "_" in s:
         return subber(repl, s)
@@ -215,7 +218,7 @@ def make_name_access_maps(bk):
     name_and_scope_map = {} # (name.lower(), scope): Name_object
     name_map = {}           # name.lower() : list of Name_objects (sorted in scope order)
     num_names = len(bk.name_obj_list)
-    for namex in xrange(num_names):
+    for namex in range(num_names):
         nobj = bk.name_obj_list[namex]
         name_lcase = nobj.name.lower()
         key = (name_lcase, nobj.scope)
@@ -232,7 +235,7 @@ def make_name_access_maps(bk):
             name_map[name_lcase].append(sort_data)
         else:
             name_map[name_lcase] = [sort_data]
-    for key in name_map.keys():
+    for key in list(name_map.keys()):
         alist = name_map[key]
         alist.sort()
         name_map[key] = [x[2] for x in alist]

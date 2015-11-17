@@ -1,3 +1,4 @@
+from builtins import hex
 #!/usr/bin/env python
 
 from library.canmatrix import *

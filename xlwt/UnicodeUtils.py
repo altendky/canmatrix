@@ -38,8 +38,9 @@ var.     ln or
 [var.]   4·rt   (optional, only if richtext=1) List of rt formatting runs
 [var.]   sz     (optional, only if phonetic=1) Asian Phonetic Settings Block
 '''
+from builtins import str
 
-from .compat import unicode, unicode_type
+from .compat import str, unicode_type
 from struct import pack
 
 def upack2(s, encoding='ascii'):
@@ -47,7 +48,7 @@ def upack2(s, encoding='ascii'):
     if isinstance(s, unicode_type):
         us = s
     else:
-        us = unicode(s, encoding)
+        us = str(s, encoding)
     # Limit is based on number of content characters
     # (not on number of bytes in packed result)
     len_us = len(us)
@@ -78,7 +79,7 @@ def upack2rt(rt, encoding='ascii'):
     # also generate the formatting run for the styles added
     for s, fontx in rt:
         if not isinstance(s, unicode_type):
-            s = unicode(s, encoding)
+            s = str(s, encoding)
         us += s
         if fontx is not None:
             # code in Rows.py ensures that
@@ -107,7 +108,7 @@ def upack1(s, encoding='ascii'):
     if isinstance(s, unicode_type):
         us = s
     else:
-        us = unicode(s, encoding)
+        us = str(s, encoding)
     len_us = len(us)
     if len_us > 255:
         raise Exception('String longer than 255 characters')

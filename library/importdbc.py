@@ -1,3 +1,10 @@
+from __future__ import division
+from __future__ import print_function
+from __future__ import absolute_import
+from builtins import map
+from builtins import range
+from past.utils import old_div
+from builtins import object
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -25,7 +32,7 @@
 #
 #TODO support for: VERSION, NS, BS_, SIG_VALTYPE_, BA_DEF_REL == BA_DEF_??, BA_DEF_DEF_REL_ = BA_DEF_DEF_  ??
 
-from canmatrix import *
+from .canmatrix import *
 import re
 import codecs
 
@@ -34,8 +41,8 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
 ####
 #CP1253 or iso-8859-1 ???
     i = 0
-    class FollowUps:
-        nothing, signalComment, frameComment, boardUnitComment, globalComment = range(5)
+    class FollowUps(object):
+        nothing, signalComment, frameComment, boardUnitComment, globalComment = list(range(5))
     followUp = FollowUps.nothing
     comment = ""
     signal = None
@@ -86,12 +93,12 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
             regexp = re.compile("^SG\_ (\w+) : (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
             temp = regexp.match(l)
             if temp:
-                reciever = map(str.strip, temp.group(11).split(','))
+                reciever = list(map(str.strip, temp.group(11).split(',')))
                 db._fl.addSignalToLastFrame(Signal(temp.group(1), temp.group(2), temp.group(3), temp.group(4), temp.group(5), temp.group(6), temp.group(7),temp.group(8),temp.group(9),temp.group(10).decode(dbcImportEncoding),reciever))
             else:
                 regexp = re.compile("^SG\_ (\w+) (\w+) *: (\d+)\|(\d+)@(\d+)([\+|\-]) \(([0-9.+\-eE]+),([0-9.+\-eE]+)\) \[([0-9.+\-eE]+)\|([0-9.+\-eE]+)\] \"(.*)\" (.*)")
                 temp = regexp.match(l)
-                reciever = map(str.strip, temp.group(12).split(','))
+                reciever = list(map(str.strip, temp.group(12).split(',')))
                 multiplex = temp.group(2)
                 if multiplex == 'M':
                     multiplex = 'Multiplexor'
@@ -188,7 +195,7 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 signal = temp.group(2)
                 tempList = temp.group(3).split('"')
                 try:
-                    for i in range(len(tempList)/2):
+                    for i in range(old_div(len(tempList),2)):
                         bo = db.frameById(botschaftId)
                         sg = bo.signalByName(signal)
                         val = tempList[i*2+1]
@@ -197,7 +204,7 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                         if sg:
                             sg.addValues(tempList[i*2], val.decode(dbcImportEncoding))
                 except:
-                    print "Error with Line: ",tempList
+                    print("Error with Line: ",tempList)
 
         elif l.startswith("VAL_TABLE_ "):
             regexp = re.compile("^VAL\_TABLE\_ (\w+) (.*);")
@@ -207,14 +214,14 @@ def importDbc(filename, dbcImportEncoding='iso-8859-1', dbcCommentEncoding='iso-
                 tempList = temp.group(2).split('"')
                 try:
                     valHash = {}
-                    for i in range(len(tempList)/2):
+                    for i in range(old_div(len(tempList),2)):
                         val = tempList[i*2+1]
                         valHash[tempList[i*2].strip()] = val.strip()
                 except:
-                    print "Error with Line: ",tempList
+                    print("Error with Line: ",tempList)
                 db.addValueTable(tableName, valHash)
             else:
-                print l
+                print(l)
 
         elif l.startswith("BA_DEF_ SG_ "):
             regexp = re.compile("^BA\_DEF\_ SG\_ +\"([A-Za-z0-9\-_]+)\" +(.+);")

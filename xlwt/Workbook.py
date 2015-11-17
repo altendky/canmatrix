@@ -1,3 +1,5 @@
+from builtins import zip
+from builtins import object
 # -*- coding: windows-1252 -*-
 # Record Order in BIFF8
 #   Workbook Globals Substream
@@ -591,7 +593,7 @@ class Workbook(object):
 
     def __all_links_rec(self):
         pieces = []
-        temp = [(idx, tag) for tag, idx in self._supbook_xref.items()]
+        temp = [(idx, tag) for tag, idx in list(self._supbook_xref.items())]
         temp.sort()
         for idx, tag in temp:
             stype, snum = tag
@@ -601,7 +603,7 @@ class Workbook(object):
             elif stype == 'xcall':
                 rec = BIFFRecords.XcallSupBookRecord().get()
                 pieces.append(rec)
-                temp = [(idx, name) for name, idx in self._xcall_xref.items()]
+                temp = [(idx, name) for name, idx in list(self._xcall_xref.items())]
                 temp.sort()
                 for idx, name in temp:
                     rec = BIFFRecords.ExternnameRecord(
@@ -611,7 +613,7 @@ class Workbook(object):
                 raise Exception('unknown supbook stype %r' % stype)
         if len(self.__sheet_refs) > 0:
             # get references in index order
-            temp = [(idx, ref) for ref, idx in self.__sheet_refs.items()]
+            temp = [(idx, ref) for ref, idx in list(self.__sheet_refs.items())]
             temp.sort()
             temp = [ref for idx, ref in temp]
             externsheet_record = BIFFRecords.ExternSheetRecord(temp).get()

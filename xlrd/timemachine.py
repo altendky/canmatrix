@@ -8,6 +8,9 @@
 # usage: from timemachine import *
 
 from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from past.builtins import basestring
 import sys
 
 python_version = sys.version_info[:2] # e.g. version 2.6 -> (2, 6)
@@ -27,15 +30,15 @@ if python_version >= (3, 0):
     EXCEL_TEXT_TYPES = (str, bytes, bytearray) # xlwt: isinstance(obj, EXCEL_TEXT_TYPES)
     REPR = ascii
     xrange = range
-    unicode = lambda b, enc: b.decode(enc)
+    str = lambda b, enc: b.decode(enc)
     ensure_unicode = lambda s: s
-    unichr = chr
+    chr = chr
 else:
     # Python 2
     BYTES_LITERAL = lambda x: x
     UNICODE_LITERAL = lambda x: x.decode('latin1')
     BYTES_ORD = ord
-    from cStringIO import StringIO as BYTES_IO
+    from io import StringIO as BYTES_IO
     def fprintf(f, fmt, *vargs):
         if fmt.endswith('\n'):
             print(fmt[:-1] % vargs, file=f)
@@ -44,9 +47,9 @@ else:
     try:
         EXCEL_TEXT_TYPES = basestring # xlwt: isinstance(obj, EXCEL_TEXT_TYPES)
     except NameError:
-        EXCEL_TEXT_TYPES = (str, unicode)
+        EXCEL_TEXT_TYPES = (str, str)
     REPR = repr
     xrange = xrange
     # following used only to overcome 2.x ElementTree gimmick which
     # returns text as `str` if it's ascii, otherwise `unicode`
-    ensure_unicode = unicode # used only in xlsx.py
+    ensure_unicode = str # used only in xlsx.py

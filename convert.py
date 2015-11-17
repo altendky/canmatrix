@@ -19,6 +19,7 @@
 #OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
 #DAMAGE.
 
+from __future__ import print_function
 import library.exportall as ex
 import library.importall as im
 import library.canmatrix as cm
@@ -54,7 +55,7 @@ dbs = {}
 infile = args[0]
 outfileName = args[1]
 
-print "Importing " + infile + " ... "
+print("Importing " + infile + " ... ")
 if infile[-3:] == 'dbc':
     dbs[""] = im.importDbc(infile, cmdlineOptions.dbcCharset,  cmdlineOptions.dbcCommentCharset)
 elif infile[-3:] == 'dbf':
@@ -71,15 +72,15 @@ elif infile[-4:] == 'yaml':
     dbs[""] = im.importYaml(infile)
 else:
     sys.stderr.write('\nFile not recognized: ' + infile + "\n")
-print "done\n"
+print("done\n")
 
 
-print "Exporting " + outfileName + " ... "
+print("Exporting " + outfileName + " ... ")
 
 for name in dbs:
     db = dbs[name]
-    print name
-    print "%d Frames found" % (db._fl._list.__len__())
+    print(name)
+    print("%d Frames found" % (db._fl._list.__len__()))
 
     if len(name) > 0:
         outfile = name + "_" + outfileName
@@ -103,4 +104,4 @@ for name in dbs:
         ex.exportYaml(db, outfile)
     else:
         sys.stderr.write('File not recognized: ' + infile + "\n")
-print "done"
+print("done")

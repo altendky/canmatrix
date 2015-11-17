@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import str
+from builtins import chr
+from past.utils import old_div
 ###############################################################################
 #
 # Worksheet - A class for writing Excel Worksheets.
@@ -85,7 +89,7 @@ def xl_col_to_name(col_num, col_abs=False):
         col_str = col_letter + col_str
 
         # Get the next order of magnitude.
-        col_num = int((col_num - 1) / 26)
+        col_num = int(old_div((col_num - 1), 26))
 
     return col_abs + col_str
 
@@ -638,9 +642,8 @@ def datetime_to_excel_datetime(dt_obj, date_1904):
 
     # Convert a Python datetime.datetime value to an Excel date number.
     excel_time = (delta.days
-                  + (float(delta.seconds)
-                     + float(delta.microseconds) / 1E6)
-                  / (60 * 60 * 24))
+                  + old_div((float(delta.seconds)
+                     + old_div(float(delta.microseconds), 1E6)), (60 * 60 * 24)))
 
     # Special case for datetime where time only has been specified and
     # the default date of 1900-01-01 is used.

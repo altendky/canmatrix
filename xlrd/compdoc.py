@@ -16,6 +16,9 @@
 # 2007-04-22 SJM Missing "<" in a struct.unpack call => can't open files on bigendian platforms.
 
 from __future__ import print_function
+from builtins import str
+from builtins import range
+from builtins import object
 import sys
 from struct import unpack
 from .timemachine import *
@@ -48,7 +51,7 @@ class DirNode(object):
         if cbufsize == 0:
             self.name = UNICODE_LITERAL('')
         else:
-            self.name = unicode(dent[0:cbufsize-2], 'utf_16_le') # omit the trailing U+0000
+            self.name = str(dent[0:cbufsize-2], 'utf_16_le') # omit the trailing U+0000
         self.children = [] # filled in later
         self.parent = -1 # indicates orphan; fixed up later
         self.tsinfo = unpack('<IIII', dent[100:116])
@@ -181,7 +184,7 @@ class CompDoc(object):
         self.SAT = []
         actual_SAT_sectors = 0
         dump_again = 0
-        for msidx in xrange(len(MSAT)):
+        for msidx in range(len(MSAT)):
             msid = MSAT[msidx]
             if msid in (FREESID, EOCSID):
                 # Specification: the MSAT array may be padded with trailing FREESID entries.
@@ -218,7 +221,7 @@ class CompDoc(object):
         if DEBUG and dump_again:
             print("MSAT: len =", len(MSAT), file=logfile)
             dump_list(MSAT, 10, logfile)
-            for satx in xrange(mem_data_secs, len(self.SAT)):
+            for satx in range(mem_data_secs, len(self.SAT)):
                 self.SAT[satx] = EVILSID
             print("SAT: len =", len(self.SAT), file=logfile)
             dump_list(self.SAT, 10, logfile)
@@ -230,7 +233,7 @@ class CompDoc(object):
             name="directory", seen_id=3)
         dirlist = []
         did = -1
-        for pos in xrange(0, len(dbytes), 128):
+        for pos in range(0, len(dbytes), 128):
             did += 1
             dirlist.append(DirNode(did, dbytes[pos:pos+128], 0, logfile))
         self.dirlist = dirlist
@@ -460,7 +463,7 @@ def dump_list(alist, stride, f=sys.stdout):
         print(file=f)
     pos = None
     oldpos = None
-    for pos in xrange(0, len(alist), stride):
+    for pos in range(0, len(alist), stride):
         if oldpos is None:
             _dump_line(pos)
             oldpos = pos

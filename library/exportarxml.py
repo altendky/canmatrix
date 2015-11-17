@@ -1,8 +1,10 @@
+from __future__ import absolute_import
+from builtins import str
 #!/usr/bin/env python
 from lxml import etree
-from canmatrix import *
-from autosarhelper import *
-from importdbc import *
+from .canmatrix import *
+from .autosarhelper import *
+from .importdbc import *
 
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.

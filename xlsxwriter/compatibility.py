@@ -1,3 +1,6 @@
+from future import standard_library
+standard_library.install_aliases()
+from past.builtins import basestring
 ###############################################################################
 #
 # Python 2/3 compatibility functions for XlsxWriter.
@@ -10,7 +13,7 @@ from decimal import Decimal
 
 try:
     # For compatibility between Python 2 and 3.
-    from StringIO import StringIO
+    from io import StringIO
 except ImportError:
     from io import StringIO
 
@@ -31,7 +34,7 @@ except ImportError:
 
 # Types to check in Python 2/3.
 if sys.version_info[0] == 2:
-    num_types = (float, int, long, Decimal, Fraction)
+    num_types = (float, int, int, Decimal, Fraction)
     str_types = basestring
 else:
     num_types = (float, int, Decimal, Fraction)
@@ -39,7 +42,7 @@ else:
 
 
 if sys.version_info < (2, 6, 0):
-    from StringIO import StringIO as BytesIO
+    from io import StringIO as BytesIO
 else:
     from io import BytesIO as BytesIO
 
@@ -47,6 +50,6 @@ else:
 def force_unicode(string):
     """Return string as a native string"""
     if sys.version_info[0] == 2:
-        if isinstance(string, unicode):
+        if isinstance(string, str):
             return string.encode('utf-8')
     return string

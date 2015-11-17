@@ -1,3 +1,4 @@
+from builtins import object
 ###############################################################################
 #
 # XMLwriter - A base class for XlsxWriter classes.

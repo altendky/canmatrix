@@ -1,3 +1,8 @@
+from __future__ import division
+from builtins import range
+from past.builtins import basestring
+from past.utils import old_div
+from builtins import object
 # -*- coding: windows-1252 -*-
 
 from . import BIFFRecords
@@ -63,11 +68,11 @@ class Row(object):
 
     def __adjust_height(self, style):
         twips = style.font.height
-        points = float(twips)/20.0
+        points = old_div(float(twips),20.0)
         # Cell height in pixels can be calcuted by following approx. formula:
         # cell height in pixels = font height in points * 83/50 + 2/5
         # It works when screen resolution is 96 dpi
-        pix = int(round(points*83.0/50.0 + 2.0/5.0))
+        pix = int(round(points*83.0/50.0 + old_div(2.0,5.0)))
         if pix > self.__height_in_pixels:
             self.__height_in_pixels = pix
 
@@ -103,7 +108,7 @@ class Row(object):
             date = dt.datetime.combine(dt.datetime(1900, 1, 1), date)
             epoch = dt.datetime(1900, 1, 1)
         delta = date - epoch
-        xldate = delta.days + delta.seconds / 86400.0
+        xldate = delta.days + old_div(delta.seconds, 86400.0)
         # Add a day for Excel's missing leap day in 1900
         if adj and xldate > 59:
             xldate += 1
@@ -166,7 +171,7 @@ class Row(object):
 
     def insert_mulcells(self, colx1, colx2, cell_obj):
         self.insert_cell(colx1, cell_obj)
-        for col_index in xrange(colx1+1, colx2+1):
+        for col_index in range(colx1+1, colx2+1):
             self.insert_cell(col_index, None)
 
     def get_cells_biff_data(self):

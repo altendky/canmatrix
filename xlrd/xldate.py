@@ -17,6 +17,8 @@
 # More importantly:
 #    Noon on Gregorian 1900-03-01 (day 61 in the 1900-based system) is JDN 2415080.0
 #    Noon on Gregorian 1904-01-02 (day  1 in the 1904-based system) is JDN 2416482.0
+from __future__ import division
+from past.utils import old_div
 import datetime
 
 _JDN_delta = (2415080 - 61, 2416482 - 1)
@@ -196,7 +198,7 @@ def xldate_from_time_tuple(time_tuple):
     """Create an excel date from a tuple of (hour, minute, second)"""
     hour, minute, second = time_tuple
     if 0 <= hour < 24 and 0 <= minute < 60 and 0 <= second < 60:
-        return ((second / 60.0 + minute) / 60.0 + hour) / 24.0
+        return old_div((old_div((old_div(second, 60.0) + minute), 60.0) + hour), 24.0)
     raise XLDateBadTuple("Invalid (hour, minute, second): %r" % ((hour, minute, second),))
 
 ##

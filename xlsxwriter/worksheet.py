@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 ###############################################################################
 #
 # Worksheet - A class for writing the Excel XLSX Worksheet file.
@@ -1647,7 +1651,7 @@ class Worksheet(xmlwriter.XMLwriter):
         }
 
         # Check for valid input parameters.
-        for param_key in options.keys():
+        for param_key in list(options.keys()):
             if param_key not in valid_parameters:
                 warn("Unknown parameter '%s' in data_validation()" % param_key)
                 return -2
@@ -1890,7 +1894,7 @@ class Worksheet(xmlwriter.XMLwriter):
             'bar_color': 1}
 
         # Check for valid input parameters.
-        for param_key in options.keys():
+        for param_key in list(options.keys()):
             if param_key not in valid_parameter:
                 warn("Unknown parameter '%s' in conditional_formatting()" %
                      param_key)
@@ -2241,7 +2245,7 @@ class Worksheet(xmlwriter.XMLwriter):
         }
 
         # Check for valid input parameters.
-        for param_key in options.keys():
+        for param_key in list(options.keys()):
             if param_key not in valid_parameter:
                 warn("Unknown parameter '%s' in add_table()" % param_key)
                 return -3
@@ -2484,7 +2488,7 @@ class Worksheet(xmlwriter.XMLwriter):
         }
 
         # Check for valid input parameters.
-        for param_key in options.keys():
+        for param_key in list(options.keys()):
             if param_key not in valid_parameters:
                 warn("Unknown parameter '%s' in add_sparkline()" % param_key)
                 return -1
@@ -2813,7 +2817,7 @@ class Worksheet(xmlwriter.XMLwriter):
             'select_unlocked_cells': True}
 
         # Overwrite the defaults with user specified values.
-        for key in (options.keys()):
+        for key in (list(options.keys())):
 
             if key in defaults:
                 defaults[key] = options[key]
@@ -3747,8 +3751,8 @@ class Worksheet(xmlwriter.XMLwriter):
         height *= y_scale
 
         # Scale by non 96dpi resoultions.
-        width *= 96.0 / x_dpi
-        height *= 96.0 / y_dpi
+        width *= old_div(96.0, x_dpi)
+        height *= old_div(96.0, y_dpi)
 
         dimensions = self._position_object_emus(col, row, x_offset, y_offset,
                                                 width, height)
@@ -4118,7 +4122,7 @@ class Worksheet(xmlwriter.XMLwriter):
 
         # Overwrite the defaults with any user supplied values. Incorrect or
         # misspelled parameters are silently ignored.
-        for key in options.keys():
+        for key in list(options.keys()):
             params[key] = options[key]
 
         # Ensure that a width and height have been set.
@@ -4225,7 +4229,7 @@ class Worksheet(xmlwriter.XMLwriter):
 
         # Overwrite the defaults with any user supplied values. Incorrect or
         # misspelled parameters are silently ignored.
-        for key in options.keys():
+        for key in list(options.keys()):
             params[key] = options[key]
 
         # Set the button caption.
@@ -4315,7 +4319,7 @@ class Worksheet(xmlwriter.XMLwriter):
 
         # The VML o:idmap data id contains a comma separated range when there
         # is more than one 1024 block of comments, like this: data="1,2".
-        for i in range(int(count / 1024)):
+        for i in range(int(old_div(count, 1024))):
             vml_data_id = '%s,%d' % (vml_data_id, start_data_id + i + 1)
 
         self.vml_data_id = vml_data_id
@@ -4741,11 +4745,11 @@ class Worksheet(xmlwriter.XMLwriter):
             padding = 5
 
             if width < 1:
-                width = int((int(width * (max_digit_width + padding) + 0.5))
-                            / float(max_digit_width) * 256.0) / 256.0
+                width = old_div(int((int(width * (max_digit_width + padding) + 0.5))
+                            / float(max_digit_width) * 256.0), 256.0)
             else:
-                width = int((int(width * max_digit_width + 0.5) + padding)
-                            / float(max_digit_width) * 256.0) / 256.0
+                width = old_div(int((int(width * max_digit_width + 0.5) + padding)
+                            / float(max_digit_width) * 256.0), 256.0)
 
         attributes = [
             ('min', col_min + 1),
@@ -4942,7 +4946,7 @@ class Worksheet(xmlwriter.XMLwriter):
                     or self.table[row_num]):
                 # Only process rows with formatting, cell data and/or comments.
 
-                span_index = int(row_num / 16)
+                span_index = int(old_div(row_num, 16))
 
                 if span_index in self.row_spans:
                     span = self.row_spans[span_index]
@@ -5049,7 +5053,7 @@ class Worksheet(xmlwriter.XMLwriter):
                                 span_max = col_num
 
             if ((row_num + 1) % 16 == 0) or row_num == self.dim_rowmax:
-                span_index = int(row_num / 16)
+                span_index = int(old_div(row_num, 16))
 
                 if span_min is not None:
                     span_min += 1

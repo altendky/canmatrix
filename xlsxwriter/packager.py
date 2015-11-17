@@ -1,3 +1,6 @@
+from builtins import str
+from builtins import range
+from builtins import object
 ###############################################################################
 #
 # Packager - A class for writing the Excel XLSX Worksheet file.

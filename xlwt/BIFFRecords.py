@@ -1,7 +1,12 @@
+from builtins import chr
+from builtins import str
+from builtins import range
+from past.builtins import basestring
+from builtins import object
 # -*- coding: cp1252 -*-
 from struct import pack
 from .UnicodeUtils import upack1, upack2, upack2rt
-from .compat import basestring, unicode, unicode_type, xrange, iteritems
+from .compat import basestring, str, unicode_type, xrange, iteritems
 
 class SharedStringTable(object):
     _SST_ID = 0x00FC
@@ -22,7 +27,7 @@ class SharedStringTable(object):
 
     def add_str(self, s):
         if self.encoding != 'ascii' and not isinstance(s, unicode_type):
-            s = unicode(s, self.encoding)
+            s = str(s, self.encoding)
         self._add_calls += 1
         if s not in self._str_indexes:
             idx = len(self._str_indexes) + len(self._rt_indexes)
@@ -37,7 +42,7 @@ class SharedStringTable(object):
         rtList = []
         for s, xf in rt:
             if self.encoding != 'ascii' and not isinstance(s, unicode_type):
-                s = unicode(s, self.encoding)
+                s = str(s, self.encoding)
             rtList.append((s, xf))
         rt = tuple(rtList)
         self._add_calls += 1
@@ -2374,7 +2379,7 @@ class ExternSheetRecord(BiffRecord):
     def get(self):
         res = []
         nrefs = len(self.refs)
-        for idx in xrange(0, nrefs, _maxRefPerRecord):
+        for idx in range(0, nrefs, _maxRefPerRecord):
             chunk = self.refs[idx:idx+_maxRefPerRecord]
             krefs = len(chunk)
             if idx: # CONTINUE record

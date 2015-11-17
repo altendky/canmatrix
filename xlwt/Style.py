@@ -1,4 +1,8 @@
 from __future__ import print_function
+from builtins import zip
+from builtins import range
+from past.builtins import basestring
+from builtins import object
 # -*- coding: windows-1252 -*-
 
 from . import Formatting
@@ -78,9 +82,9 @@ class StyleCollection(object):
         self._xf_val2x = {}
 
         self._num_formats = {}
-        for fmtidx, fmtstr in zip(range(0, 23), StyleCollection._std_num_fmt_list[0:23]):
+        for fmtidx, fmtstr in zip(list(range(0, 23)), StyleCollection._std_num_fmt_list[0:23]):
             self._num_formats[fmtstr] = fmtidx
-        for fmtidx, fmtstr in zip(range(37, 50), StyleCollection._std_num_fmt_list[23:]):
+        for fmtidx, fmtstr in zip(list(range(37, 50)), StyleCollection._std_num_fmt_list[23:]):
             self._num_formats[fmtstr] = fmtidx
 
         self.default_style = XFStyle()
@@ -190,9 +194,9 @@ class StyleCollection(object):
     def _all_fonts(self):
         result = b''
         if self.style_compression:
-            alist = self._font_x2id.items()
+            alist = list(self._font_x2id.items())
         else:
-            alist = [(x, o) for o, x in self._font_id2x.items()]
+            alist = [(x, o) for o, x in list(self._font_id2x.items())]
         alist.sort()
         for font_idx, font in alist:
             result += font.get_biff_record().get()
@@ -202,7 +206,7 @@ class StyleCollection(object):
         result = b''
         alist = [
             (v, k)
-            for k, v in self._num_formats.items()
+            for k, v in list(self._num_formats.items())
             if v >= FIRST_USER_DEFINED_NUM_FORMAT_IDX
             ]
         alist.sort()
@@ -215,9 +219,9 @@ class StyleCollection(object):
         for i in range(0, 16):
             result += XFRecord(self._default_xf, 'style').get()
         if self.style_compression == 2:
-            alist = self._xf_x2id.items()
+            alist = list(self._xf_x2id.items())
         else:
-            alist = [(x, o) for o, x in self._xf_id2x.items()]
+            alist = [(x, o) for o, x in list(self._xf_id2x.items())]
         alist.sort()
         for xf_idx, xf in alist:
             result += XFRecord(xf).get()
@@ -660,7 +664,7 @@ def _parse_strg_to_obj(strg, obj, parse_dict,
             v = ' '.join(guff[1:])
             if not v:
                 raise EasyXFCallerError("no value supplied for %s.%s" % (section, k))
-            for counter in xrange(2):
+            for counter in range(2):
                 result = section_dict.get(k)
                 if result is None:
                     raise EasyXFCallerError('%s.%s is not a known attribute' % (section, k))

@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+from builtins import str
 #!/usr/bin/env python
 #Copyright (c) 2013, Eduard Broecker
 #All rights reserved.
@@ -23,7 +25,7 @@
 # this script exports dbc-files from a canmatrix-object
 # dbc-files are the can-matrix-definitions of the CanOe (Vector Informatic)
 
-from canmatrix import *
+from .canmatrix import *
 import codecs
 
 #dbcExportEncoding = 'iso-8859-1'
@@ -112,19 +114,19 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
     f.write("\n")
 
     defaults = {}
-    for (type,define) in db._frameDefines.items():
+    for (type,define) in list(db._frameDefines.items()):
         f.write('BA_DEF_ BO_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
-    for (type,define) in db._signalDefines.items():
+    for (type,define) in list(db._signalDefines.items()):
         f.write('BA_DEF_ SG_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
-    for (type,define) in db._buDefines.items():
+    for (type,define) in list(db._buDefines.items()):
         f.write('BA_DEF_ BU_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
-    for (type,define) in db._globalDefines.items():
+    for (type,define) in list(db._globalDefines.items()):
         f.write('BA_DEF_ "' + type + '" ' + define._definition.encode(dbcExportEncoding,'replace') + ';\n')
         if type not in defaults and define._defaultValue is not None:
             defaults[type] = define._defaultValue
@@ -135,25 +137,25 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
 
     #boardunit-attributes:
     for bu in db._BUs._list:
-        for attrib,val in bu._attributes.items():
+        for attrib,val in list(bu._attributes.items()):
             f.write('BA_ "' + attrib + '" BU_ ' + bu._name + ' ' + val  + ';\n')
     f.write("\n")
 
     #global-attributes:
-    for attrib,val in db._attributes.items():
+    for attrib,val in list(db._attributes.items()):
         f.write( 'BA_ "' + attrib + '" ' + val  + ';\n')
     f.write("\n")
 
     #messages-attributes:
     for bo in db._fl._list:
-        for attrib,val in bo._attributes.items():
+        for attrib,val in list(bo._attributes.items()):
             f.write( 'BA_ "' + attrib.encode(dbcExportEncoding) + '" BO_ %d ' % bo._Id + val + ';\n')
     f.write("\n")
 
     #signal-attributes:
     for bo in db._fl._list:
         for signal in bo._signals:
-            for attrib,val in signal._attributes.items():
+            for attrib,val in list(signal._attributes.items()):
                 f.write( 'BA_ "' + attrib + '" SG_ %d ' % bo._Id + signal._name + ' ' + val  + ';\n')
     f.write("\n")
 
@@ -162,7 +164,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
         for signal in bo._signals:
             if len(signal._values) > 0:
                 f.write('VAL_ %d ' % bo._Id + signal._name)
-                for attrib,val in signal._values.items():
+                for attrib,val in list(signal._values.items()):
                     f.write(' ' + str(attrib) + ' "' + str(val.encode(dbcExportEncoding)) + '"')
                 f.write(";\n");
 

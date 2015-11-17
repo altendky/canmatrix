@@ -11,6 +11,12 @@
 # No part of the content of this file was derived from the works of David Giffin.
 
 from __future__ import print_function
+from __future__ import division
+from builtins import zip
+from builtins import str
+from builtins import range
+from past.utils import old_div
+from builtins import object
 import copy
 from struct import unpack
 from .timemachine import *
@@ -675,7 +681,7 @@ tMul = 0x05
 tDiv = 0x06
 tPower = 0x07
 tConcat = 0x08
-tLT, tLE, tEQ, tGE, tGT, tNE = range(0x09, 0x0F)
+tLT, tLE, tEQ, tGE, tGT, tNE = list(range(0x09, 0x0F))
 
 import operator as opr
 
@@ -722,7 +728,7 @@ binop_rules = {
 unop_rules = {
     0x13: (lambda x: -x,        70, '-', ''), # unary minus
     0x12: (lambda x: x,         70, '+', ''), # unary plus
-    0x14: (lambda x: x / 100.0, 60, '',  '%'),# percent
+    0x14: (lambda x: old_div(x, 100.0), 60, '',  '%'),# percent
     }
 
 LEAF_RANK = 90

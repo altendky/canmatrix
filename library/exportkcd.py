@@ -1,3 +1,6 @@
+from __future__ import absolute_import
+from builtins import str
+from builtins import range
 #!/usr/bin/env python
 
 
@@ -26,7 +29,7 @@
 # kcd-files are the can-matrix-definitions of the kayak (http://kayak.2codeornot2code.org/)
 
 from lxml import etree
-from canmatrix import *
+from .canmatrix import *
 
 def createSignal(signal, nodeList):
     sig = etree.Element('Signal', name=signal._name, offset=str(signal._startbit))
@@ -55,7 +58,7 @@ def createSignal(signal, nodeList):
 
 
     labelset = etree.Element('LabelSet')
-    for valueVal,valName in signal._values.items():
+    for valueVal,valName in list(signal._values.items()):
         label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
         labelset.append(label)
     sig.append(labelset)
@@ -143,7 +146,7 @@ def exportKcd(db, filename):
                     value.set('max',str(signal._max))
                 multiplexor.append(value)
                 labelset = etree.Element('LabelSet')
-                for valueVal,valName in signal._values.items():
+                for valueVal,valName in list(signal._values.items()):
                     label = etree.Element('Label', name=valName.replace('"',''), value=str(valueVal))
                     labelset.append(label)
                 multiplexor.append(labelset)

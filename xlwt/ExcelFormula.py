@@ -1,3 +1,4 @@
+from builtins import object
 # -*- coding: windows-1252 -*-
 
 from . import ExcelFormulaParser, ExcelFormulaLexer

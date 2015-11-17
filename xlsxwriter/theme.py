@@ -1,3 +1,4 @@
+from builtins import object
 ###############################################################################
 #
 # Theme - A class for writing the Excel XLSX Worksheet file.

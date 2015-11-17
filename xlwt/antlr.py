@@ -1,4 +1,11 @@
 from __future__ import print_function
+from __future__ import division
+from builtins import hex
+from builtins import str
+from builtins import range
+from past.builtins import basestring
+from past.utils import old_div
+from builtins import object
 ## This file is part of PyANTLR. See LICENSE.txt for license
 ## details..........Copyright (C) Wolfgang Haefelinger, 2004.
 
@@ -44,7 +51,7 @@ from __future__ import print_function
 ## get sys module
 import sys
 
-from .compat import long, basestring, int_types, xrange
+from .compat import int, basestring, int_types, xrange
 
 ###xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx###
 ###                     global symbols                             ###
@@ -904,7 +911,7 @@ class TokenStreamIterator(object):
             return
         raise TypeError("TokenStreamIterator requires TokenStream object")
 
-    def next(self):
+    def __next__(self):
         assert self.inst
         item = self.inst.nextToken()
         if not item or item.isEOF():
@@ -1078,7 +1085,7 @@ class TokenStreamHiddenTokenFilter(TokenStreamBasicFilter):
 ###                       StringBuffer                             ###
 ###xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx###
 
-class StringBuffer:
+class StringBuffer(object):
     def __init__(self,string=None):
         if string:
             self.text = list(string)
@@ -1376,7 +1383,7 @@ class CharScanner(TokenStream):
 
     def tab(self) :
         c = self.getColumn()
-        nc = ( ((c-1)/self.tabsize) + 1) * self.tabsize + 1
+        nc = ( (old_div((c-1),self.tabsize)) + 1) * self.tabsize + 1
         self.setColumn(nc)
 
     def panic(self,s='') :
@@ -1551,7 +1558,7 @@ class CharScanner(TokenStream):
 ###                   CharScannerIterator                          ###
 ###xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx###
 
-class CharScannerIterator:
+class CharScannerIterator(object):
 
     def __init__(self,inst):
         if isinstance(inst,CharScanner):
@@ -1559,7 +1566,7 @@ class CharScannerIterator:
             return
         raise TypeError("CharScannerIterator requires CharScanner object")
 
-    def next(self):
+    def __next__(self):
         assert self.inst
         item = self.inst.nextToken()
         if not item or item.isEOF():
@@ -1582,12 +1589,12 @@ class BitSet(object):
 
     def __init__(self,data=None):
         if not data:
-            BitSet.__init__(self,[long(0)])
+            BitSet.__init__(self,[int(0)])
             return
         if isinstance(data,int):
-            BitSet.__init__(self,[long(data)])
+            BitSet.__init__(self,[int(data)])
             return
-        if isinstance(data,long):
+        if isinstance(data,int):
             BitSet.__init__(self,[data])
             return
         if not isinstance(data,list):
@@ -1602,7 +1609,7 @@ class BitSet(object):
     def __str__(self):
         bits = len(self.data) * BitSet.BITS
         s = ""
-        for i in xrange(0,bits):
+        for i in range(0,bits):
             if self.at(i):
                 s += "1"
             else:
@@ -1649,7 +1656,7 @@ class BitSet(object):
         mask = self.bitMask(bit)
         if i>=len(self.data):
             d = i - len(self.data) + 1
-            for x in xrange(0,d):
+            for x in range(0,d):
                 self.data.append(0)
             assert len(self.data) == i+1
         if on:
@@ -1677,12 +1684,12 @@ class BitSet(object):
 def illegalarg_ex(func):
     raise ValueError(
        "%s is only valid if parser is built for debugging" %
-       (func.func_name))
+       (func.__name__))
 
 def runtime_ex(func):
     raise RuntimeError(
        "%s is only valid if parser is built for debugging" %
-       (func.func_name))
+       (func.__name__))
 
 ###xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx###
 ###                       TokenBuffer                              ###
@@ -2074,7 +2081,7 @@ class LLkParser(Parser):
         if self.inputState.guessing > 0:
             guess = " [guessing]"
         print((ee + rname + guess))
-        for i in xrange(1,self.k+1):
+        for i in range(1,self.k+1):
             if i != 1:
                 print(", ")
             if self.LT(i) :
@@ -2801,7 +2808,7 @@ def make(*nodes):
     if not nodes:
         return None
 
-    for i in xrange(0,len(nodes)):
+    for i in range(0,len(nodes)):
         node = nodes[i]
         if node:
             assert isinstance(node,AST)
@@ -2811,7 +2818,7 @@ def make(*nodes):
     if root:
         root.setFirstChild(None)
 
-    for i in xrange(1,len(nodes)):
+    for i in range(1,len(nodes)):
         if not nodes[i]:
             continue
         if not root:

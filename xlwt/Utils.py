@@ -1,3 +1,6 @@
+from builtins import str
+from builtins import chr
+from builtins import range
 # see the xlwt.license module for details of licensing.
 
 # Utilities for work with reference to cells and with sheetnames
@@ -18,7 +21,7 @@ def col_by_name(colname):
     """
     col = 0
     power = 1
-    for i in xrange(len(colname)-1, -1, -1):
+    for i in range(len(colname)-1, -1, -1):
         ch = colname[i]
         col += (ord(ch) - ord('A') + 1) * power
         power *= 26

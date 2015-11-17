@@ -1,3 +1,4 @@
+from builtins import object
 ###############################################################################
 #
 # SharedStrings - A class for writing the Excel XLSX sharedStrings file.

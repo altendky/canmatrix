@@ -8,6 +8,14 @@ This package actually imports your Python `collections`, and adds
 its own versions of `namedtuple` and `defaultdict` only if they are
 missing.
 """
+from __future__ import division
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from builtins import map
+from builtins import str
+from past.builtins import basestring
+from past.utils import old_div
 
 from collections import *
 import sys
@@ -145,7 +153,7 @@ except NameError:
         namespace = dict(_itemgetter=_itemgetter, __name__='namedtuple_%s' % typename,
                          _property=property, _tuple=tuple)
         try:
-            exec(template) in namespace
+            exec((template), namespace)
         except SyntaxError:
             e = sys.exc_info()[1]
             raise SyntaxError(str(e) + ':\n' + template)
@@ -165,7 +173,7 @@ except NameError:
 
 if __name__ == '__main__':
     # verify that instances can be pickled
-    from cPickle import loads, dumps
+    from pickle import loads, dumps
     Point = namedtuple('Point', 'x, y', True)
     p = Point(x=10, y=20)
     assert p == loads(dumps(p, -1))
@@ -179,7 +187,7 @@ if __name__ == '__main__':
         def __str__(self):
             return 'Point: x=%6.3f y=%6.3f hypot=%6.3f' % (self.x, self.y, self.hypot)
 
-    for p in Point(3, 4), Point(14, 5), Point(9. / 7, 6):
+    for p in Point(3, 4), Point(14, 5), Point(old_div(9., 7), 6):
         print(p)
 
     class Point(namedtuple('Point', 'x y')):

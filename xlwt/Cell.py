@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import range
+from past.utils import old_div
+from builtins import object
 # -*- coding: windows-1252 -*-
 
 from struct import unpack, pack
@@ -77,7 +81,7 @@ class NumberCell(object):
             # That was step 2: "itemp" is the best candidate coded value.
             # Now for step 3: simulate the decoding,
             # to check for round-trip correctness.
-            if itemp / 100.0 == num:
+            if old_div(itemp, 100.0) == num:
                 # print "30-bit integer RK*100", itemp, hex(itemp)
                 rk_encoded = 3 | (itemp << 2)
                 return 1, rk_encoded
@@ -195,7 +199,7 @@ def _get_cells_biff_data_mul(rowx, cell_items):
         lastcolx = icolx
         j = i
         packed_record = ''
-        for j in xrange(i+1, nitems):
+        for j in range(i+1, nitems):
             jcolx, jcell = cell_items[j]
             if jcolx != lastcolx + 1:
                 nexti = j

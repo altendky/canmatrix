@@ -1,3 +1,7 @@
+from __future__ import division
+from builtins import str
+from builtins import range
+from past.utils import old_div
 ###############################################################################
 #
 # Drawing - A class for writing the Excel XLSX Drawing file.
@@ -770,7 +774,7 @@ class Drawing(xmlwriter.XMLwriter):
         width = line.get('width', 0.75)
 
         # Round width to nearest 0.25, like Excel.
-        width = int((width + 0.125) * 4) / 4.0
+        width = old_div(int((width + 0.125) * 4), 4.0)
 
         # Convert to internal units.
         width = int(0.5 + (12700 * width))

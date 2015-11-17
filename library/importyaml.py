@@ -26,7 +26,8 @@
 # This export is complete, no information lost
 #
 
-from canmatrix import *
+from __future__ import absolute_import
+from .canmatrix import *
 import yaml
 
 

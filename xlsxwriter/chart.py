@@ -1,3 +1,6 @@
+from __future__ import division
+from builtins import range
+from past.utils import old_div
 ###############################################################################
 #
 # Chart - A class for writing the Excel XLSX Worksheet file.
@@ -1125,14 +1128,14 @@ class Chart(xmlwriter.XMLwriter):
             properties = ('x', 'y', 'width', 'height')
 
         # Check for valid properties.
-        for key in args.keys():
+        for key in list(args.keys()):
             if key not in properties:
                 warn("Property '%s' allowed not in layout options" % key)
                 return
 
         # Set the layout properties.
         for prop in properties:
-            if prop not in args.keys():
+            if prop not in list(args.keys()):
                 warn("Property '%s' must be specified in layout options"
                      % prop)
                 return
@@ -2889,7 +2892,7 @@ class Chart(xmlwriter.XMLwriter):
 
         if width:
             # Round width to nearest 0.25, like Excel.
-            width = int((width + 0.125) * 4) / 4.0
+            width = old_div(int((width + 0.125) * 4), 4.0)
 
             # Convert to internal units.
             width = int(0.5 + (12700 * width))
