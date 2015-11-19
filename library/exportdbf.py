@@ -36,7 +36,7 @@ import codecs
 
 def exportDbf(db, filename):
     dbfExportEncoding = 'iso-8859-1'
-    f = open(filename,"w")
+    f = open(filename,"w", encoding=dbfExportEncoding)
 
 
     header = """//******************************BUSMASTER Messages and signals Database ******************************//
@@ -83,11 +83,11 @@ def exportDbf(db, filename):
                 else:
                     multiplex = 'm' + str(signal._multiplex)
 
-            f.write("," + signal._unit.encode(dbfExportEncoding) + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
+            f.write("," + signal._unit + ",%s,"%multiplex + ','.join(signal._reciever) + "\n")
 
             if len(signal._values) > 0:
                 for attrib,val in list(signal._values.items()):
-                    f.write('[VALUE_DESCRIPTION] "' + val.encode(dbfExportEncoding) + '",' + str(attrib) + '\n')
+                    f.write('[VALUE_DESCRIPTION] "' + val + '",' + str(attrib) + '\n')
 
 
         f.write("[END_MSG]\n\n")
@@ -110,7 +110,7 @@ def exportDbf(db, filename):
     for frame in db._fl._list:
         if frame._comment is not None:
             comment = frame._comment.replace("\n"," ")
-            f.write(str(frame._Id) + ' S "' + comment.encode(dbfExportEncoding) + '";\n')
+            f.write(str(frame._Id) + ' S "' + comment + '";\n')
 
     f.write("[END_DESC_MSG]\n")
 
@@ -119,7 +119,7 @@ def exportDbf(db, filename):
     for bu in db._BUs._list:
         if bu._comment is not None:
             comment = bu._comment.replace("\n"," ")
-            f.write(bu._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n')
+            f.write(bu._name  + ' "' + comment + '";\n')
 
     f.write("[END_DESC_NODE]\n")
 
@@ -130,7 +130,7 @@ def exportDbf(db, filename):
         for signal in bo._signals:
             if signal._comment is not None:
                 comment = signal._comment.replace("\n"," ")
-                f.write("%d S " % bo._Id + signal._name  + ' "' + comment.encode(dbfExportEncoding) + '";\n')
+                f.write("%d S " % bo._Id + signal._name  + ' "' + comment + '";\n')
 
     f.write("[END_DESC_SIG]\n")
     f.write("[END_DESC]\n\n")

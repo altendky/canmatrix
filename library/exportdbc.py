@@ -32,7 +32,7 @@ import codecs
 #CP1253
 
 def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='iso-8859-1'):
-    f = open(filename,"w")
+    f = open(filename,"w", encoding=dbcExportEncoding)
 
     f.write( "VERSION \"created by canmatrix\"\n\n")
     f.write("\n")
@@ -77,7 +77,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
             f.write(" [%s|%s]" % (signal._min, signal._max))
             f.write(' "')
 
-            f.write(signal._unit.encode(dbcExportEncoding))
+            f.write(signal._unit)
             f.write('" ')
             if signal._reciever.__len__() == 0:
                 signal._reciever = ['Vector__XXX']
@@ -149,7 +149,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
     #messages-attributes:
     for bo in db._fl._list:
         for attrib,val in list(bo._attributes.items()):
-            f.write( 'BA_ "' + attrib.encode(dbcExportEncoding) + '" BO_ %d ' % bo._Id + val + ';\n')
+            f.write( 'BA_ "' + attrib + '" BO_ %d ' % bo._Id + val + ';\n')
     f.write("\n")
 
     #signal-attributes:
@@ -165,7 +165,7 @@ def exportDbc(db, filename, dbcExportEncoding='iso-8859-1', dbcCommentEncoding='
             if len(signal._values) > 0:
                 f.write('VAL_ %d ' % bo._Id + signal._name)
                 for attrib,val in list(signal._values.items()):
-                    f.write(' ' + str(attrib) + ' "' + str(val.encode(dbcExportEncoding)) + '"')
+                    f.write(' ' + str(attrib) + ' "' + str(val) + '"')
                 f.write(";\n");
 
 
