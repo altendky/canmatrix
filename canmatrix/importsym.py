@@ -134,6 +134,12 @@ def importSym(filename):
 
                 if tmpMux == "Mux":
                     multiplexor= tempArray[2]
+                    if multiplexor[-1] == 'h':
+                        base = 16
+                        multiplexor = multiplexor[:-1]
+                    else:
+                        base = 10
+                    multiplexor = int(multiplexor, base)
                     multiplexValTable[multiplexor] = sigName
                     indexOffset = 2
 
