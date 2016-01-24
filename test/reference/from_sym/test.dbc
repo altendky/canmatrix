@@ -22,7 +22,7 @@ BO_ 2164239169 CommandModeControl: 8 Vector__XXX
  SG_ MasterFollowerMode_command : 17|2@0+ (1,0) [0|1] "" Vector__XXX
 
 BO_ 2365566017 CommandPower: 8 Vector__XXX
- SG_ RealPower_command : 7|32@0- (1,0) [-90000|90000] "W" Vector__XXX
+ SG_ "RealPower command" : 7|32@0- (1,0) [-90000|90000] "W" Vector__XXX
  SG_ ReactivePower_command : 39|32@0- (1,0) [-90000|90000] "VA" Vector__XXX
 
 BO_ 2365566529 CommandVF: 8 Vector__XXX
@@ -274,7 +274,7 @@ BA_ "GenSigStartValue" SG_ 2164239169 ForceRelayK1_Precharge_command 0.0;
 BA_ "GenSigStartValue" SG_ 2164239169 ForceRelayRelayK2_DCRun_comand 0.0;
 BA_ "GenSigStartValue" SG_ 2164239169 PhaseRotation_command 0.0;
 BA_ "GenSigStartValue" SG_ 2164239169 MasterFollowerMode_command 0.0;
-BA_ "GenSigStartValue" SG_ 2365566017 RealPower_command 0.0;
+BA_ "GenSigStartValue" SG_ 2365566017 "RealPower command" 0.0;
 BA_ "GenSigStartValue" SG_ 2365566017 ReactivePower_command 0.0;
 BA_ "GenSigStartValue" SG_ 2365566529 Voltage_command 2400.0;
 BA_ "GenSigStartValue" SG_ 2365566529 Frequency_command 500.0;
@@ -445,7 +445,7 @@ VAL_ 2164235073 ForceRelayK1_Precharge_command 0 "Normal" 1 "Force On" 2 "Error"
 VAL_ 2164235073 ForceRelayRelayK2_DCRun_comand 0 "Normal" 1 "Force On" 2 "Error" 3 "N/A";
 VAL_ 2164235073 PhaseRotation_command 0 "Negative" 1 "Positive" 2 "Error" 3 "N/A";
 VAL_ 2164235073 MasterFollowerMode_command 0 "Master" 1 "Follower" 2 "Error" 3 "N/A";
-VAL_ 2365572087 State_status 0 "Power On Reset" 1 "Ready" 2 "Following" 3 "Fault" 4 "Forming" 5 "N/A" 6 "N/A" 7 "N/A" 8 "N/A" 9 "N/A" 10 "N/A" 11 "N/A" 12 "N/A" 13 "N/A" 14 "N/A" 15 "N/A";
+VAL_ 2365572087 State_status 0 "Power On Reset, and a quoted comma" 1 "Ready" 2 "Following" 3 "Fault" 4 "Forming" 5 "N/A" 6 "N/A" 7 "N/A" 8 "N/A" 9 "N/A" 10 "N/A" 11 "N/A" 12 "N/A" 13 "N/A" 14 "N/A" 15 "N/A";
 VAL_ 2365572087 MX2Permissive_status 0 "Open" 1 "Closed" 2 "Error" 3 "N/A";
 VAL_ 2365572087 PowerAvailAC_status 0 "None" 1 "Available" 2 "Error" 3 "N/A";
 VAL_ 2365572087 PowerAvailDC_status 0 "None" 1 "Available" 2 "Error" 3 "N/A";
